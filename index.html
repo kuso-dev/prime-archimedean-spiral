@@ -5,24 +5,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>wasm example</title>
-    <script>
-        function execute() {
-            import("../../prime-archimedean-spiral/pkg/eratosthenes.js").then(_module => {
-                _module.default().then(() => {
-                    const { eratosthenes } = _module
-                    const start = performance.now();
-                    const range = 1e8 // とりあえず1~1億までの範囲で素数を数えてみる
-                    primes = eratosthenes(range)
-                    const end = performance.now();
-                    console.log(`${(end - start).toPrecision(5)}ms`, primes)
-                })
-            });
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
+    <script src="../../prime-archimedean-spiral/script.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+    <style type="text/css">
+        body {
+            position: relative;
+            overflow: hidden;
         }
-    </script>
+
+        canvas {
+            position: absolute;
+            left: 0;
+            z-index: -1;
+        }
+
+        .accordion {
+            position: fixed;
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: 250ms grid-template-rows ease;
+            width: 100%;
+            color: white;
+            background-color: rgb(0 128 0 / .25);
+        }
+
+        body:hover .accordion {
+            grid-template-rows: 1fr;
+        }
+
+        .panel {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+        }
+    </style>
 </head>
 
 <body>
-    <button onclick="execute()">eratosthenes</button>
+    <div class="accordion">
+        <div class="panel">
+            <fieldset>
+                <legend>mode</legend>
+                <input type="radio" id="js" name="mode" value="js" checked onchange="onChangeInput()" />
+                <label for="js">js</label>
+                <input type="radio" id="wasm" name="mode" value="wasm" onchange="onChangeInput()" />
+                <label for="wasm">wasm</label>
+            </fieldset>
+            <fieldset>
+                <legend>range(1000~50000000)</legend>
+                <input id="range" type="number" min="1000" value="1000" onchange="onChangeInput()">
+            </fieldset>
+            <fieldset>
+                <legend>rate</legend>
+                <select id="rate" onchange="onChangeInput()">
+                    <option value="1">1x</option>
+                    <option value="5">5x</option>
+                    <option value="10">10x</option>
+                    <option value="50">50x</option>
+                    <option value="100">100x</option>
+                    <option value="500">500x</option>
+                </select>
+            </fieldset>
+            <p>perform time > <span id="time"></span></p>
+        </div>
+    </div>
+
 </body>
 
 </html>
