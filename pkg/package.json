@@ -1,0 +1,15 @@
+{
+  "name": "eratosthenes",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "eratosthenes_bg.wasm",
+    "eratosthenes.js",
+    "eratosthenes.d.ts"
+  ],
+  "main": "eratosthenes.js",
+  "types": "eratosthenes.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

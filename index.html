@@ -5,6 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>wasm example</title>
+    <script>
+        function execute() {
+            import("../../prime-archimedean-spiral/pkg/eratosthenes.js").then(_module => {
+                _module.default().then(() => {
+                    const { eratosthenes } = _module
+                    const start = performance.now();
+                    const range = 1e8 // とりあえず1~1億までの範囲で素数を数えてみる
+                    primes = eratosthenes(range)
+                    const end = performance.now();
+                    console.log(`${(end - start).toPrecision(5)}ms`, primes)
+                })
+            });
+        }
+    </script>
 </head>
 
 <body>
